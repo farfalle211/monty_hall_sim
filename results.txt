@@ -1,2 +1,2 @@
-Swap win percent is 66.87%
-No Swap win percent is 33.13%
+Swap win percent is 65.7%
+No Swap win percent is 34.3%

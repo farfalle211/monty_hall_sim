@@ -11,14 +11,7 @@ class MontyHall
     @initial_pick_index = rand(3)
     @initial_pick = @doors[@initial_pick_index]
     @revealed_door = ""
-  end
-
-  #Find the index of the host's revealed door
-  #This cannot be the player's original choice or the door with the car behind it
-  def reveal_door
-    door_indexes = [0, 1, 2]
-    door_indexes -= [@initial_pick_index, @doors.index(:car)]
-    @revealed_door = door_indexes.shuffle.first
+    reveal_door
   end
 
   #True if the initial pick is the car
@@ -39,6 +32,16 @@ class MontyHall
   def won?(final_choice)
     final_choice == :car
   end
+
+  private
+
+  #Find the index of the host's revealed door
+  #This cannot be the player's original choice or the door with the car behind it
+  def reveal_door
+    door_indexes = [0, 1, 2]
+    door_indexes -= [@initial_pick_index, @doors.index(:car)]
+    @revealed_door = door_indexes.shuffle.first
+  end
 end
 
 class Tester
@@ -52,12 +55,14 @@ class Tester
 
     @trials.times do
       monty_hall = MontyHall.new
-      monty_hall.reveal_door
       @swap_wins += 1 if monty_hall.swap_win?
       @no_swap_wins += 1 if monty_hall.no_swap_win?
     end
     calulate_win_stats
+    send_results
   end
+
+  private
 
   #Obtain win percentages for swap/no_swap scenarios
   def calulate_win_stats
@@ -83,4 +88,3 @@ class Tester
 end
 
 tester = Tester.new
-tester.send_results
